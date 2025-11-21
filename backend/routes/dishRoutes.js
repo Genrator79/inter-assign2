@@ -3,7 +3,7 @@ const router = express.Router();
 const Dish = require('../models/Dish');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Get all dishes
+// get all dishes
 router.get('/', async (req, res) => {
     try {
         const dishes = await Dish.find();
@@ -14,20 +14,20 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Toggle published status
+// toggle published status
 router.put('/:id/toggle', authMiddleware, async (req, res) => {
     try {
+        // find dish by dishId (not the Mongo _id)
         const dish = await Dish.findOne({ dishId: req.params.id });
         if (!dish) {
             return res.status(404).json({ message: 'Dish not found' });
         }
 
+        // flip the publish flag
         dish.isPublished = !dish.isPublished;
         await dish.save();
 
-        // Emit socket event (will be handled in server.js via app.set/get or global io if structured differently, 
-        // but for simplicity we can just rely on the polling fallback or pass io here. 
-        // To keep it clean, I'll emit from server.js or attach io to req.)
+        // fire socket event so the UI updates immediately
         const io = req.app.get('socketio');
         io.emit('dishUpdated', dish);
 

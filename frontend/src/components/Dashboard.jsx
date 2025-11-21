@@ -17,16 +17,16 @@ const Dashboard = ({ onLogout }) => {
         socket.on('connect', () => {
             console.log('Connected to socket server');
         });
-
+        
+        // dishUpdated updates just one dish when the API toggle is used.
         socket.on('dishUpdated', (updatedDish) => {
             setDishes(prev => prev.map(dish =>
                 dish.dishId === updatedDish.dishId ? updatedDish : dish
             ));
         });
 
+        //dishesSync refreshes the whole list every few seconds to catch any database changes done outside our dashboard.”
         socket.on('dishesSync', (syncedDishes) => {
-            // Only update if there are actual changes to avoid unnecessary re-renders
-            // For simplicity, we just replace
             setDishes(syncedDishes);
         });
 
