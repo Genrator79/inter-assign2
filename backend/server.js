@@ -12,6 +12,13 @@ const Dish = require('./models/Dish');
 const app = express();
 const server = http.createServer(app);
 
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST", "PUT"]
+    }
+});
+
 // Middleware
 app.use(cors({
     origin: "*",
