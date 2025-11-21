@@ -63,7 +63,7 @@ Before you begin, ensure you have met the following requirements:
     npm run dev
     ```
 
-    The server will start on `http://localhost:3000`.
+    The server will start on `http://localhost:5001`.
 
 2.  **Start the Frontend Development Server**
 
